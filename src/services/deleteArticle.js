@@ -1,13 +1,7 @@
 import axios from "axios";
-import errorHandler from "../helpers/errorHandler";
 
 const deleteArticle = async ({ slug, headers }) =>
 {
-  if (!slug || !headers)
-  {
-    throw new Error('Missing required parameters');
-  }
-
   try
   {
     const response = await axios.delete(`https://api.realworld.io/api/articles/${slug}/`, { headers });
@@ -20,7 +14,7 @@ const deleteArticle = async ({ slug, headers }) =>
     }
     else
     {
-      errorHandler(error);
+      
       throw error;
     }
   }

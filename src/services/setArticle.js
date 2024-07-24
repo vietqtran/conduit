@@ -1,13 +1,7 @@
 import axios from "axios";
-import errorHandler from "../helpers/errorHandler";
 
 async function setArticle({ body, description, headers, slug, tagList, title })
 {
-  if (!body || !description || !headers || !title)
-  {
-    throw new Error('Missing required parameters: body, description, headers, and title are required');
-  }
-
   try
   {
     const { data } = await axios({
@@ -25,7 +19,7 @@ async function setArticle({ body, description, headers, slug, tagList, title })
     return data.article.slug;
   } catch (error)
   {
-    errorHandler(error);
+    
     throw error;
   }
 }

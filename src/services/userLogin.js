@@ -1,11 +1,5 @@
 import axios from "axios";
-import errorHandler from "../helpers/errorHandler";
 
-/**
- * Logs in a user to the application.
- * @param {Object} credentials - The user's email and password.
- * @returns {Promise} - A promise that resolves with the user's login information.
- */
 async function userLogin({ email, password })
 {
   try
@@ -29,7 +23,7 @@ async function userLogin({ email, password })
     return loggedIn;
   } catch (error)
   {
-    errorHandler(error);
+    
   }
 }
 

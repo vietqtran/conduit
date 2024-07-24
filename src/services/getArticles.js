@@ -1,7 +1,4 @@
 import axios from "axios";
-import errorHandler from "../helpers/errorHandler";
-
-// prettier-ignore
 async function getArticles({
   headers,
   limit = 3,
@@ -11,36 +8,6 @@ async function getArticles({
   username,
 })
 {
-  if (!headers)
-  {
-    throw new Error("headers is required");
-  }
-
-  if (!location)
-  {
-    throw new Error("location is required");
-  }
-
-  if (location !== "favorites" && location !== "feed" && location !== "global" && location !== "profile" && location !== "tag")
-  {
-    throw new Error("Invalid location. Supported values are 'favorites', 'feed', 'global', 'profile', 'tag'");
-  }
-
-  if (location === "favorites" && !username)
-  {
-    throw new Error("username is required for 'favorites' location");
-  }
-
-  if (location === "profile" && !username)
-  {
-    throw new Error("username is required for 'profile' location");
-  }
-
-  if (location === "tag" && !tagName)
-  {
-    throw new Error("tagName is required for 'tag' location");
-  }
-
   try
   {
     const url = {
@@ -56,7 +23,7 @@ async function getArticles({
     return data;
   } catch (error)
   {
-    errorHandler(error);
+    
   }
 }
 

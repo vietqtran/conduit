@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import dateFormatter from "../../helpers/dateFormatter";
 import deleteComment from "../../services/deleteComment";
 import getComments from "../../services/getComments";
 import CommentAuthor from "./CommentAuthor";
 
-function CommentList({ triggerUpdate, updateComments }) {
-  const [comments, setComments] = useState([]);
+function CommentList({ comments, setComments}) {
   const { headers, isAuth, loggedUser } = useAuth();
   const { slug } = useParams();
+  const navigate = useNavigate()
 
   useEffect(() => {
-    getComments({ slug }).then(setComments).catch(console.error);
-  }, [slug, triggerUpdate]);
+    getComments({ slug })
+      .then(fetchedComments => setComments(fetchedComments))
+      .catch(console.error);
+  }, [slug]);
 
-  const handleClick = (commentId) => {
-    if (!isAuth) alert("You need to login first");
+  const handleDelete = (commentId) => {
+    if (!isAuth) navigate('/login')
 
     const confirmation = window.confirm("Want to delete the comment?");
     if (!confirmation) return;
 
     deleteComment({ commentId, headers, slug })
-      .then(updateComments)
+      .then(() => {
+        setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
+      })
       .catch(console.error);
   };
 
@@ -39,7 +43,7 @@ function CommentList({ triggerUpdate, updateComments }) {
             {isAuth && loggedUser.username === username && (
               <button
                 className="btn btn-sm btn-outline-secondary pull-xs-right"
-                onClick={() => handleClick(id)}
+                onClick={() => handleDelete(id)}
               >
                 <i className="ion-trash-a"></i>
               </button>

@@ -1,6 +1,7 @@
 import toggleFollow from '../../../services/toggleFollow';
 import { useAuth } from '../../../context/AuthContext';
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function FollowButton({ followersCount, following, handler, username })
 {
@@ -10,10 +11,10 @@ function FollowButton({ followersCount, following, handler, username })
   const buttonStyle = following ? "btn-secondary" : "";
   const iconStyle = following ? "ion-minus-round" : "ion-plus-round";
   const text = !isAuth ? "Followers" : following ? " Unfollow " : " Follow ";
-
+  const navigate = useNavigate()
   const handleClick = () =>
   {
-    if (!isAuth) return alert("You need to login first");
+    if (!isAuth) return navigate('/login');
 
     setLoading(true);
 

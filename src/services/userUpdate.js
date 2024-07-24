@@ -1,13 +1,7 @@
 import axios from "axios";
-import errorHandler from "../helpers/errorHandler";
 
 async function userUpdate({ headers, bio, email, image, password, username })
 {
-  if (!headers || !bio || !email || !image || !password || !username)
-  {
-    throw new Error("Missing required fields");
-  }
-
   try
   {
     const { data } = await axios({
@@ -31,7 +25,7 @@ async function userUpdate({ headers, bio, email, image, password, username })
     return loggedIn;
   } catch (error)
   {
-    errorHandler(error);
+    
     throw error;
   }
 }

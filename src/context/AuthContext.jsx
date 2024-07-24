@@ -1,17 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
 import getUser from "../services/getUser";
 
 const AuthContext = createContext();
 
-export function useAuth()
-{
+export function useAuth() {
   return useContext(AuthContext);
 }
 
-const loggedIn = JSON.parse(localStorage.getItem("loggedUser"));
-
-const authState = {
+const initialAuthState = {
   headers: null,
   isAuth: false,
   loggedUser: {
@@ -23,23 +19,24 @@ const authState = {
   },
 };
 
-function AuthProvider({ children })
-{
-  const [ { headers, isAuth, loggedUser }, setAuthState ] = useState(
-    loggedIn || authState,
-  );
+function AuthProvider({ children }) {
+  const [authState, setAuthState] = useState(() => {
+    const loggedIn = JSON.parse(localStorage.getItem("loggedUser"));
+    return loggedIn ? { ...initialAuthState, ...loggedIn } : initialAuthState;
+  });
 
-  useEffect(() =>
-  {
+  const { headers, isAuth, loggedUser } = authState;
+
+  useEffect(() => {
     if (!headers) return;
 
     getUser({ headers })
       .then((loggedUser) => setAuthState((prev) => ({ ...prev, loggedUser })))
       .catch(console.error);
-  }, [ headers, setAuthState ]);
+  }, [headers]);
 
   return (
-    <AuthContext.Provider value={{ headers, isAuth, loggedUser, setAuthState }}>
+    <AuthContext.Provider value={{ ...authState, setAuthState }}>
       {children}
     </AuthContext.Provider>
   );

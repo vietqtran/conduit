@@ -1,13 +1,7 @@
 import axios from "axios";
-import errorHandler from "../helpers/errorHandler";
 
 async function toggleFav({ slug, favorited, headers })
 {
-  if (!slug || !headers)
-  {
-    throw new Error('Missing required parameters');
-  }
-
   try
   {
     const { data } = await axios({
@@ -24,7 +18,7 @@ async function toggleFav({ slug, favorited, headers })
     return data.article;
   } catch (error)
   {
-    errorHandler(error);
+    
     throw error;
   }
 }

@@ -7,7 +7,7 @@ function ArticleAuthorButtons({ body, description, slug, tagList, title }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (!isAuth) return alert("You need to login first");
+    if (!isAuth) return navigate('/login')
 
     const confirmation = window.confirm("Want to delete the article?");
     if (!confirmation) return;

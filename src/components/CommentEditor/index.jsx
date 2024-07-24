@@ -12,15 +12,16 @@ function CommentEditor({ updateComments })
   const { username, image } = loggedUser || {};
   const { slug } = useParams();
 
-  const handleSubmit = (e) =>
-  {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     if (body.trim() === "") return;
-
+  
     postComment({ body, headers, slug })
-      .then(updateComments)
-      .then(setForm({ body: "" }))
+      .then(newComment => {
+        updateComments(newComment);
+        setForm({ body: "" });
+      })
       .catch(console.error);
   };
 

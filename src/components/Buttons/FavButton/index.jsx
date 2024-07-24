@@ -1,6 +1,7 @@
 import toggleFav from '../../../services/toggleFav';
 import { useAuth } from '../../../context/AuthContext';
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function FavButton({ favorited, favoritesCount, handler, right, slug, text })
 {
@@ -10,10 +11,10 @@ function FavButton({ favorited, favoritesCount, handler, right, slug, text })
   const buttonPosition = right ? "pull-xs-right" : "";
   const buttonStyle = favorited ? "active" : "";
   const buttonText = text ? "Favorite" : !isAuth ? "" : "";
-
+  const navigate = useNavigate()
   const handleClick = () =>
   {
-    if (!isAuth) return alert("You need to login first");
+    if (!isAuth) return navigate('/login')
 
     setLoading(true);
 

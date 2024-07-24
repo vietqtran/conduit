@@ -1,8 +1,22 @@
 import ContainerRow from "../ContainerRow";
 import { Link } from "react-router-dom";
 
-function AuthPageContainer({ children, error, path, text, title })
-{
+function AuthPageContainer({ children, error, path, text, title }) {
+  const renderError = () => {
+    if (typeof error === 'string') {
+      return <li>{error}</li>;
+    } else if (Array.isArray(error)) {
+      return error.map((err, index) => <li key={index}>{err}</li>);
+    } else if (typeof error === 'object' && error !== null) {
+      return Object.entries(error).map(([key, value]) => (
+        <li key={key}>{`${key}: ${value}`}</li>
+      ));
+    }
+    return null;
+  };
+
+  console.log(renderError())
+
   return (
     <div className="auth-page">
       <ContainerRow type="page">
@@ -12,11 +26,9 @@ function AuthPageContainer({ children, error, path, text, title })
             <Link to={path}>{text}</Link>
           </p>
 
-          {error && (
             <ul className="error-messages">
-              <li>{error}</li>
+              {renderError()}
             </ul>
-          )}
 
           {children}
         </div>
